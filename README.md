@@ -3,7 +3,7 @@ a little tool to fetch all configured MFA Methods and Admin-Users
 
 Microsoft has no built in feature to show the MFA-Status of the users
 
-##Requirements
+## Requirements
 
 - To do a Export with excel, you need to import the export-excel CMDlet with admin privileges.
   <Install-Module -Name ImportExcel>
@@ -11,7 +11,7 @@ Microsoft has no built in feature to show the MFA-Status of the users
 - A Previleged User for Accessing the data. In my case I use a global admin.
 
 
-##How to Use
+## How to Use
 
 Eesy start the script and logon with yout Entra-ID User.
 
@@ -31,7 +31,7 @@ When the Scrip is done, you can select the User Objects, after filtering in Grid
 Here you find all configured Methods.
 
 
-##After Words
+## After Words
 Importand: You only see the configured Methods and not, if MFA is enabled, or a conditional Access Rule is set.
 
 For me, the script is a perfect tool for checking, if all users has set up their 2nd factor befor enabling Conditional Access.
