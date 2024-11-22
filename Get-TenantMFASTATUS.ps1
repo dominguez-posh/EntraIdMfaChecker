@@ -1,5 +1,7 @@
-﻿#Version 1.0
+#Version 1.0
 #Author Lucas Dominguez
+
+$ErrorActionPreference = "silentlycontinue"
 
 function ConnectTo-MgGraph {
   # Check if MS Graph module is installed
@@ -35,7 +37,21 @@ function Get-Admins{
     foreach($Role in $Roles){
         $RoleName = $Role.DisplayName
         Write-Host ("Processing Admin Role(" + $i + "/" + $Roles.Count + "):" + $RoleName + "...")
-        $Members = Get-MgDirectoryRoleMember -DirectoryRoleId $Role.id | % {Get-MGUser -Userid $_.Id}
+        $RoleID = $ROle.ID
+        $Members = @()
+
+        $RoleMembers =  Get-MgDirectoryRoleMember -DirectoryRoleId  $RoleID 
+
+        foreach ($RoleMember in $RoleMembers){
+
+            try{$Members += Get-MgGroupMember -GroupId $RoleMember.Id } catch{}
+            try{$Members += Get-MgUser -UserId $RoleMember.ID } catch{}
+           
+
+        }
+
+
+
         foreach($Member in $Members){
             $UserRoles += [PSCustomObject]@{
                 DisplayName    = $Member.DisplayName
@@ -450,7 +466,7 @@ cls
 
 while(-not (Get-MgContext)){ConnectTo-MgGraph}
 
-Getting Admin Users
+#Getting Admin Users
 $admins = Get-Admins
 
 
