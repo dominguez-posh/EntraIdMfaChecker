@@ -1,7 +1,11 @@
 #Version 1.0
 #Author Lucas Dominguez
 
+# Install-Module -Name ImportExcel 
+
 $ErrorActionPreference = "silentlycontinue"
+
+if (-not(Get-InstalledModule ImportExcel )) { Install-Module ImportExcel -Scope CurrentUser -AllowClobber -Force}
 
 function ConnectTo-MgGraph {
   # Check if MS Graph module is installed
@@ -21,7 +25,7 @@ function ConnectTo-MgGraph {
   Write-Host "Connecting to Microsoft Graph" -ForegroundColor Cyan
 
 
-  Connect-MgGraph -Scopes "User.Read.All, UserAuthenticationMethod.Read.All, Directory.Read.All"
+  Connect-MgGraph -Scopes "User.Read.All, UserAuthenticationMethod.Read.All, Directory.Read.All" -Environment 'Global' -ContextScope 'Process'
   
    }
 
@@ -41,7 +45,7 @@ function Get-Admins{
         $Members = @()
 
         $RoleMembers =  Get-MgDirectoryRoleMember -DirectoryRoleId  $RoleID 
-
+        $ErrorActionPreference = "silentlycontinue"
         foreach ($RoleMember in $RoleMembers){
 
             try{$Members += Get-MgGroupMember -GroupId $RoleMember.Id } catch{}
@@ -49,6 +53,7 @@ function Get-Admins{
            
 
         }
+        $ErrorActionPreference = "continue"
 
 
 
@@ -492,6 +497,3 @@ $MFAInfos = $MFAInfos | Out-GridView -PassThru -Title "Select Users to Save for 
 if($MFAInfos){$MFAInfos | Export-Excel -Path (Save-File) -WorksheetName "MFA-Users"}
 
 $Void = Disconnect-MgGraph
-
-
-
