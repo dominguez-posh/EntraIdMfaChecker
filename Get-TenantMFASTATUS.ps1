@@ -457,7 +457,7 @@ function Save-File([string] $initialDirectory){
 
     $OpenFileDialog = New-Object System.Windows.Forms.SaveFileDialog
     $OpenFileDialog.initialDirectory = $initialDirectory
-    $OpenFileDialog.filter = "XML| *.xlsx"
+    $OpenFileDialog.filter = "Excel| *.xlsx"
     $OpenFileDialog.ShowDialog() |  Out-Null
 
     return $OpenFileDialog.filename
